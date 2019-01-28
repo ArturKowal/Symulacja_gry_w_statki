@@ -16,28 +16,45 @@ class Statek:
         self.oslona=(self.dane[statek])[3]
         self.niezmienna_oslona=(self.dane[statek])[3]
         self.atak=(self.dane[statek])[4]
+        self.niezmienna_atak=(self.dane[statek])[4]
+        
     def dawaj(self):
         return (self.statek,' ps: ',self.ps,' oslona: ',self.oslona,' atak: ',self.atak)
     def attack(self, atakowany): 
-        if self.atak<(1/100)*atakowany.oslona:
-            #print('Atak nie udany bo punkty ataku atakujacego sa mniejsze niż 1/100 punktów osłony atakowanego')
+        if self.atak<((1/100)*atakowany.oslona):
+            print('Atak nie udany bo punkty ataku atakujacego sa mniejsze niż 1/100 punktów osłony atakowanego')
             return 3
-        else:
-            return self.trafiony(atakowany)
-            
+        else: return self.atak_oslony(atakowany)
+        
+        
+    def odnowa(self):
+        self.oslona=self.niezmienna_oslona
+        
+    def atak_oslony(self,atakowany):
+        if atakowany.oslona>0:
+            if atakowany.oslona-self.atak>0:
+                atakowany.oslona-=self.atak
+                print('Statek: ',self.statek,' atakuje ',atakowany.statek,' Oslona obroncy: ',atakowany.oslona)
+                return 3
+            else: 
+                if self.atak==atakowany.oslona:
+                    atakowany.oslona=0
+                else:
+                    self.atak-=atakowany.oslona
+                    return self.trafiony(atakowany)
+        else: return self.trafiony(atakowany)
+    
     def trafiony(self, atakowany):
-        atakowany.ps=atakowany.ps-(self.atak-atakowany.oslona)
-        atakowany.oslona=0
-        #print('Statek: ',self.statek,' atakuje ',atakowany.statek,'Punkty strukturalne obroncy: ',atakowany.ps)
+        atakowany.ps-=self.atak
+        self.atak=self.niezmienna_atak
+        print('Statek: ',self.statek,' atakuje ',atakowany.statek,' Punkty strukturalne obroncy: ',atakowany.ps)
         if atakowany.ps>0:
-            if atakowany.niezmienna_ps>atakowany.ps*(70/100):
+            if atakowany.niezmienna_ps*0.7>atakowany.ps:
                 szanse=1-(atakowany.ps/atakowany.niezmienna_ps)
-                #print(atakowany.ps,'/',atakowany.niezmienna_ps)
-                losowa=rand(1,10)
-                losowa/=10
-                #print('no wybuch los ',losowa,' szansa ',szanse)
+                losowa=np.random.rand()
+                print(losowa,' |<| ',szanse)
                 if losowa<szanse:
-                    #print('Statek: ',atakowany.statek,' ma mniej niz 70% punktow strukturalnych i wybucha')
+                    print('Statek: ',atakowany.statek,' ma mniej niz 70% punktow strukturalnych i wybucha')
                     return True
                 else:
                     return self.ponowny_strzal(atakowany)
@@ -45,16 +62,14 @@ class Statek:
                 return self.ponowny_strzal(atakowany)
         else:
             return True
-        
-    def odnowa(self):
-        self.oslona=self.niezmienna_oslona
-        
+            
     def ponowny_strzal(self,atakowany):
         n=DaneStatkow().szybkie_dziala[str(self.skrot)][str(atakowany.skrot)]
         szanse=1-(1/n)
         los=np.random.rand()
-        print('Szanse na ponowny strzal',los,'/</',szanse)
+        if szanse>0:
+            print('Szanse na ponowny strzal',los,'/</',szanse)
         if los<szanse:
-            #print('Statek: ',self.statek,' zyskuje kolejne trafienie')
+            print('Statek: ',self.statek,' zyskuje kolejne trafienie')
             return False
         return 3
