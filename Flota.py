@@ -3,6 +3,9 @@ from random import randint as rand
 from Statek import *
 class Flotaa:
     def __init__(self):
+        """
+        init robudowywuje liste obu flot w odpowiedniej kolejności zamieszczenia statków w pliku
+        """
         self.flota_1=[] ; self.dodadkowa_1=[] ; self.zniszczone_1=[]
         self.flota_2=[] ; self.dodadkowa_2=[] ; self.zniszczone_2=[]
         for i in range(2,15):
@@ -18,6 +21,9 @@ class Flotaa:
         print('Gracz_1 ma statkow: ',len(self.flota_1),'Gracz_2 ma statkow: ',len(self.flota_2))  
         
     def rozgrywka(self):
+        """
+        Statki z pierwszej floty strzelają w statki z drugiej floty i sprawdzane jest czy zyskuja kolejny strzał, jeśli tak dodaje je         do listy statków z kolejnym strzałem
+        """
         for i in range(0,len(self.flota_1)):
             losowa = rand(0,len(self.flota_2)-1)
             wynik=self.flota_1[i].attack(self.flota_2[losowa])
@@ -25,7 +31,9 @@ class Flotaa:
                 self.zniszczone_2.append(losowa)
             elif wynik==False and self.dodadkowa_1.count(losowa)==0:
                 self.dodadkowa_1.append(i)
-        
+        """
+        Obsłguje zyskane dodadkowe strzały team 1
+        """
         while len(self.dodadkowa_1)>0:
             losowa = rand(0,len(self.flota_2)-1)
             wynik=self.flota_1[self.dodadkowa_1[0]].attack(self.flota_2[losowa])
@@ -35,7 +43,9 @@ class Flotaa:
                 self.zniszczone_2.append(losowa)
             elif wynik==False and self.dodadkowa_1.count(losowa)==0:
                 self.dodadkowa_1.append(aktualna)
-        #// drugi team
+        """
+        Statki z drugiej floty strzelają w statki z pierwszej floty i sprawdzane jest czy zyskuja kolejny strzał, jeśli tak dodaje je           do listy statków z kolejnym strzałem
+        """
         
         for i in range(0,len(self.flota_2)):
             losowa = rand(0,len(self.flota_1)-1)
@@ -44,6 +54,9 @@ class Flotaa:
                 self.zniszczone_1.append(losowa)
             elif wynik==False and self.dodadkowa_2.count(losowa)==0:
                 self.dodadkowa_2.append(i)
+        """
+        Obsłguje zyskane dodadkowe strzały team 2
+        """
         
         while len(self.dodadkowa_2)>0:
             losowa = rand(0,len(self.flota_1)-1)
@@ -58,6 +71,9 @@ class Flotaa:
         return self.usuwanie()
         
     def usuwanie(self):
+        """
+        usuwanie statków zniszczonych
+        """
         self.zniszczone_1.sort() ; self.zniszczone_2.sort()
         while len(self.zniszczone_1) !=0:
             self.flota_1.pop(self.zniszczone_1[-1])
@@ -70,12 +86,18 @@ class Flotaa:
         return self.winner()
     
     def odnowa_oslony(self):
+        """
+        na koniec rundy wywaływanie tej metody odbudowywuje osłony
+        """
         for i in range(len(self.flota_1)):
             self.flota_1[i].odnowa()
         for i in range(len(self.flota_2)):
             self.flota_2[i].odnowa()
             
     def winner(self):
+        """
+        zwraca informacje który team wygrał a gdy żaden nie wygrał to metoda odbudowywje osłony i zwraca "3"
+        """
         if len(self.flota_1)==0: return 2
         elif len(self.flota_2)==0: return 1
         else: 

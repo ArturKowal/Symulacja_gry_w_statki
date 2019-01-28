@@ -21,6 +21,10 @@ class Statek:
     def dawaj(self):
         return (self.statek,' ps: ',self.ps,' oslona: ',self.oslona,' atak: ',self.atak)
     def attack(self, atakowany): 
+        """
+        wywołanie tej funkcji obsługuje strzał i w zależności czy statek został zniszczony czy zyskał ponowny strzał
+        lub po prostu został trafiony przekieruje strzał na kolejne metody
+        """
         if self.atak<((1/100)*atakowany.oslona):
             print('Atak nie udany bo punkty ataku atakujacego sa mniejsze niż 1/100 punktów osłony atakowanego')
             return 3
@@ -28,9 +32,15 @@ class Statek:
         
         
     def odnowa(self):
+        """
+        po koniec rundy wyłowywanie tej funkcji sprawia odnowe osłony statku
+        """
         self.oslona=self.niezmienna_oslona
         
     def atak_oslony(self,atakowany):
+        """
+        obsługuje atak osłony i jeśli strzał zniszczył osłone przenosi atak do metody "trafiony"
+        """
         if atakowany.oslona>0:
             if atakowany.oslona-self.atak>0:
                 atakowany.oslona-=self.atak
@@ -45,6 +55,11 @@ class Statek:
         else: return self.trafiony(atakowany)
     
     def trafiony(self, atakowany):
+        """
+        obsługuje strzał i punkty strukturalne obrońcy po strzale, gdy statek zyskał ponowny 
+        strzal przenosi to do metody "ponowny_strzał"
+        zwraca True gdy statek został zniszczny
+        """
         atakowany.ps-=self.atak
         self.atak=self.niezmienna_atak
         print('Statek: ',self.statek,' atakuje ',atakowany.statek,' Punkty strukturalne obroncy: ',atakowany.ps)
@@ -64,6 +79,9 @@ class Statek:
             return True
             
     def ponowny_strzal(self,atakowany):
+        """
+        oblicza szanse na kolejny strzał a gdy statek zyskuje kolejne trafienie zwraca False
+        """
         n=DaneStatkow().szybkie_dziala[str(self.skrot)][str(atakowany.skrot)]
         szanse=1-(1/n)
         los=np.random.rand()

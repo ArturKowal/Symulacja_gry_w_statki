@@ -3,6 +3,9 @@ statków. Powinna te parametry wczytać z plików.
 """
 import linecache
 class DaneStatkow:
+    """Pobiera z pliku dane statkow i umieszcza w słowniku gdzie kluczem jest skrót nazwy statku
+    szybkie działa - podanie 2 argumentów [statek atakujacy] i [statek obroncy] daje odczytane z pliku szanse na ponowny sztrzał
+    """
     def __init__(self):
         file = open('szybkie_dziala.txt','r')
         self.szybkie_dziala= {}
