@@ -1,0 +1,14 @@
+skrót ilość
+mt 1200
+dt 100
+lm 100
+cm 100
+kr 0
+ow 100
+sk 0
+re 100
+ss 0
+b 0
+n 100
+gs 40
+p 0

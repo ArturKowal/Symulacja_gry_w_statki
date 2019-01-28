@@ -1,0 +1,67 @@
+Bitwa
+
+W bitwie uczestniczą dwie floty. Bitwa składa się z 6 rund. W czasie rundy każdy ze statków we
+flocie wybiera losowo jeden cel z floty przeciwnej i strzela w niego. Statki strzelają w określonej
+kolejności (opisane poniżej).
+Po każdym strzale istnieje pewne prawdopodobieństwo, że dany statek strzeli ponownie, znowu
+wybierając cel losowo (choć zazwyczaj to prawdopodobieństwo jest równe 0) .
+Na koniec każdej rundy zniszczone statki (to kiedy statek zostaje zniszczony jest opisane poniżej)
+są usuwane z flot.
+Ze względu na losowy charakter bitwy, zazwyczaj wykonuje się wiele symulacji (na przykład 100)
+po czym uśrednia wyniki.
+Flota z której wszystkie statki zostaną zniszczone przegrywa (a ta druga wygrywa).
+Remis następuje jeśli po 6 rundach w obydwu flotach wciąż pozostały statki, lub w którejś rundzie
+obydwie floty jednocześnie się nawzajem zniszczyły (bardzo rzadki przypadek).
+
+Kolejność statków
+
+Kolejność statków we flocie jest taka jak kolejność statków w plikach z danymi. To znaczy, że
+najpierw są wszystkie małe transportery, potem wszystkie duże, potem lekkie myśliwce, itd.
+Usuwanie zniszczonych statków nie może zaburzać tej kolejności.
+Parametry statków
+
+W grze występuje kilkanaście typów statków. Każdy statek posiada kilka parametrów, są to:
+punkty strukturalne – określają wytrzymałość statku. Każdy trafienie zmniejsza ich ilość. Statek
+zostaje zniszczony jeśli jego ilość punktów strukturalnych spadnie do zera (lub poniżej zera).
+osłona – osłona pochłania część obrażeń (tyle ile dany statek ma punktów osłony). Dopiero gdy
+osłona statku zostanie zredukowana do zera, kolejne trafienia redukują ilość punktów
+strukturalnych. Osłona odnawia się (jej ilość wraca do maksymalnej wartości) na początku każdej
+rundy walki.
+atak – jest to ilość obrażeń, które zadaje statek.
+Szybkie działa – jest to parametr określający szansę na oddanie kolejnego strzału.
+Prawdopodobieństwo to 1-1/n, gdzie n to ilość szybkich dział danego statku przeciwko celowi, w
+który trafił. Przykładowo krążownik ma 6 szybkich dział przeciwko lekkim myśliwcom, co
+oznacza, że jeśli trafi w lekki myśliwiec to ma 1-1/6=5/6 szans na oddanie kolejnego strzału
+(ponownie losowy wybierając cel). Jeśli natomiast trafi w okręt wojenny (szybkie działa=1) to ma
+1-1/1=0 szansy na kolejny atak, czyli na tym kończy swoją rundę.
+Ponadto, jeżeli siła ataku jest mniejsza niż 1% osłony celu, atak nie udaje się. Jeżeli ilość punktów
+strukturalnych danego statku spadnie poniżej 70% wartości maksymalnej, przy każdym trafieniu
+statek ten ma pewną szansę na wybuchnięcie. Szansa to 1-(aktualna ilość punktów
+strukturalnych)/(maksymalna ilość punktów strukturalnych).
+Przykład
+Przykładowa walka - okręt wojenny (ow) vs krążownik (kr)
+Runda 1
+okręt wojenny - 6000 punktów strukturalnych, 200 punktów osłony, 1000 punktów ataku
+krążownik - 2700 punktów strukturalnych, 50 punktów osłony, 400 punktów ataku
+Okręt wojenny ma 1000 punktów ataku i strzela w krążownik.
+1000 punktów ataku jest większe niż 1% z 50 punktów osłony krążownika, więc atak udaje się.
+Z 1000 punktów ataku zostaje 950 bo osłona krążownika absorbuje 50.
+Osłona zaabsorbowała 50 z 50 punktów więc do końca tej rundy będzie już równa 0.
+Krążownik miał 2700 p. strukturalnych, a teraz odejmujemy od tego 950.
+
+Krążownikowi zostaje 1750 p. strukturalnych.
+1750 z 2700 to około 65%, czyli mniej niż 70% wymagane by sprawdzić szansę na wybuch.
+Szansa na wybuch wynosi 1-1750/2700=0.35. Powiedzmy, że krążownik ma pecha i w wyniku
+losowania wybucha, jego p. strukturalne spadają do 0.
+Statki są usuwane na koniec rundy, więc krążownik nadal może strzelić (mimo, że teoretycznie
+został już zniszczony).
+Krążownik ma 400 punktów ataku i strzela w okręt wojenny.
+400 punktów ataku jest większe niż 1% z 200 punktów osłony okrętu wojennego, więc atak udaje
+się.
+Z 400 punktów ataku zostaje 200 bo osłona okrętu wojennego absorbuje 200.
+Osłona zaabsorbowała 200 z 200 punktów więc do końca tej rundy będzie już równa 0.
+Okręt wojenny miał 6000 p. strukturalnych, a teraz odejmujemy od tego 200.
+Okrętowi wojennemu zostaje 5800 p. strukturalnych.
+5800 z 6000 to około 97%, czyli więcej niż 70% wymagane by sprawdzić szansę na wybuch.
+Na koniec rundy zniszczone statki są usuwane. W walce pozostały statki tylko jednej strony więc to
+ona wygrywa. Bitwa kończy się.
